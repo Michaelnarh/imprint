@@ -1,1 +1,1 @@
-web:gunicorn imprint.wsgi
+web: gunicorn imprint.wsgi
