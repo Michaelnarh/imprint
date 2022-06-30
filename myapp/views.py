@@ -7,16 +7,16 @@ from django.template import loader
 import re
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import pandas as pd;
+import pandas as pd
 
 # Create your views here.
 
 
 def index(request):
     if request.POST:
-        global p, m,ph,ex,c,ch 
-        p , m, ph, ex,c,ch = "","","","","",""
-        url =request.POST.get("url")
+        global p, m, ph, ex, c, ch
+        p, m, ph, ex, c, ch = "", "", "", "", "", ""
+        url = request.POST.get("url")
     # url = "file:///C:/Users/Michael_Narh/Desktop/imprint-download-project/imprint-html.html"
         # url = "https://www.bechtle.com/de-en/legal-notice"
         print(url)
@@ -33,7 +33,8 @@ def index(request):
         # break into lines and remove leading and trailing space on each
         lines = (line.strip() for line in text.splitlines())
         # break multi-headlines into a line each
-        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+        chunks = (phrase.strip()
+                  for line in lines for phrase in line.split("  "))
         # drop blank lines
         text = '\n'.join(chunk for chunk in chunks if chunk)
 
@@ -49,30 +50,30 @@ def index(request):
         chairman = re.search(r'Chairman of.*\n.*', text)
         com = re.search(r'Commercial.*\n.*', text)
         try:
-            p= pro.group()
+            p = pro.group()
         except:
             print("cannot group")
         try:
-            m=mail.group
+            m = mail.group
         except:
             print("cannot group")
         try:
-            ph=phone.group
+            ph = phone.group
         except:
             print("cannot group")
         try:
-            ex=exec.group
+            ex = exec.group
         except:
             print("cannot group")
         try:
-            c=com.group
+            c = com.group
         except:
             print("cannot group")
         try:
-            ch=chairman.group
+            ch = chairman.group
         except:
             print("cannot group")
-        context={
+        context = {
             "email": m,
             "phone": ph,
             "exec": ex,
