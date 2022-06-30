@@ -1,1 +1,1 @@
-web: gunicorn imprint.wsgi
+web: python manage.py runserver 
