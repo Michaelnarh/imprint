@@ -1,1 +1,1 @@
-web: python manage.py runserver 
+web: python install django && python manage.py runserver 
