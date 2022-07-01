@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Imprint Scrape</title>
-		<link rel="stylesheet" href="{{STATIC_URL}}sass/styles.css" />
+		<link rel="stylesheet" href="{%{{STATIC_URL}} 'sass/styles.css' %}" />
 		<style>
 			:root {
 				--primary-color: rgb(13, 13, 105);
@@ -57,7 +57,7 @@
 			.form input {
 				width: 600px;
 				height: 40px;
-				border-radius: 8px;
+				border-radius: 20px;
 				padding-left: 2rem;
 			}
 
@@ -83,6 +83,7 @@
 				display: -ms-flexbox;
 				display: flex;
 				margin: 2rem 18rem;
+				border-radius:20px;
 				-ms-flex-item-align: center;
 				align-self: center;
 				background-color: var(--mainWhite-color);
@@ -156,7 +157,6 @@
 				<div class="tag-container">
 					<div>
 						<p class="tag">{{pro}}</p>
-						<br />
 					</div>
 					<div>
 						<p class="tag">{{email}}</p>
@@ -178,8 +178,9 @@
 		</div>
 		<footer>
 			<div class="footer-area">
-				<p class="copyrigh">
-					&copy; <span class="date"></span> SuperLax Technologies
+				<p class="copyright">
+					&copy; <p class="date"></p> SuperLax Technologies
+					&copy; <p class="date"></p> SuperLax Technologies
 				</p>
 			</div>
 		</footer>

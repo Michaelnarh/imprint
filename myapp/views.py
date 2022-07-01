@@ -14,12 +14,12 @@ import pandas as pd
 
 def index(request):
     if request.POST:
-        global p, m, ph, ex, c, ch
-        p, m, ph, ex, c, ch = "", "", "", "", "", ""
+        global p, m, ph, ex, c, ch, va
+        p, m, ph, ex, c, ch, va = "", "", "", "", "", "", ""
         url = request.POST.get("url")
     # url = "file:///C:/Users/Michael_Narh/Desktop/imprint-download-project/imprint-html.html"
         # url = "https://www.bechtle.com/de-en/legal-notice"
-        print(url)
+        # print(url)
         html = urlopen(url).read()
         soup = BeautifulSoup(html, features="html.parser")
 
@@ -39,16 +39,16 @@ def index(request):
         text = '\n'.join(chunk for chunk in chunks if chunk)
 
         # print(text)
-        print('...........................................')
+        # print('...........................................')
 
-        heroRegex = re.compile(r'\D+:\D+')
         # mo1 = heroRegex.search(text)
-        pro = re.search(r'Provider:\n.*', text)
-        mail = re.search(r'E-mail:\n.*', text)
-        phone = re.search(r'Phone:\n.*', text)
-        exec = re.search(r'Execu.*\n.*', text)
-        chairman = re.search(r'Chairman of.*\n.*', text)
-        com = re.search(r'Commercial.*\n.*', text)
+        pro = re.search(r'Provider:|Anbieter:\n.*', text)
+        mail = re.search(r'E-mail:|\n.*', text)
+        phone = re.search(r'Phone:|Telefon:\n.*', text)
+        exec = re.search(r'Execu.*|Vorstand:.*\n.*', text)
+        chairman = re.search(r'Chairman of.*|Vorsitzender des.*\n.*', text)
+        com = re.search(r'Commercial.*|HRB-Nr.*\n.*', text)
+        vat = re.search(r'VAT.*|VAT number.*\n.*', text)
         try:
             p = pro.group()
         except:
@@ -73,12 +73,17 @@ def index(request):
             ch = chairman.group
         except:
             print("cannot group")
+        try:
+            va = vat.group
+        except:
+            print("cannot group")
         context = {
             "email": m,
             "phone": ph,
             "exec": ex,
             "com": c,
             "chairman": ch,
+            "vat": ch,
         }
         return render(request, "imprint.html", context)
     return render(request, "imprint.html", {})
