@@ -87,7 +87,7 @@ def index(request):
 
         # mo1 = heroRegex.search(text)
         pro = re.search(r'(Provider.*:|Anbieter.*:).*\n.*', text)
-        mail = re.search(r'E-mail.*:|E-Mail.*:.*\n.*', text)
+        mail = re.search(r'(E-mail.*:|E-Mail.*:).*\n.*', text)
         phone = re.search(r'(Phone:|Telefon:).*\n.*', text)
         exec = re.search(r'(Execu.*:|Vorstand.*:).*\n.*', text)
         chairman = re.search(
