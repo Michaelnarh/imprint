@@ -25,4 +25,5 @@ tzdata==2022.1
 urllib3==1.26.9
 virtualenv==20.15.0
 virtualenv-clone==0.5.7
+whitenoise==6.2.0
 XlsxWriter==3.0.3
