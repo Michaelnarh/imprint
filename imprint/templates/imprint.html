@@ -5,141 +5,24 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Imprint Scrape</title>
-		<link rel="stylesheet" href="{%{{STATIC_URL}} 'sass/styles.css' %}" />
-		<style>
-			:root {
-				--primary-color: rgb(13, 13, 105);
-				--secondary-color: rgb(55, 7, 248);
-				--mainWhite-color: rgb(255, 255, 255);
-			}
-
-			* {
-				-webkit-box-sizing: border-box;
-				box-sizing: border-box;
-				top: 0;
-			}
-
-			body {
-				background-color: aliceblue;
-			}
-
-			.header-area {
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-box-pack: center;
-				-ms-flex-pack: center;
-				justify-content: center;
-				-webkit-box-align: center;
-				-ms-flex-align: center;
-				align-items: center;
-			}
-
-			.header-area h4 {
-				color: var(--primary-color);
-				font-size: 3.4rem;
-				padding: 1rem;
-			}
-
-			.form {
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-box-pack: center;
-				-ms-flex-pack: center;
-				justify-content: center;
-				-webkit-box-align: center;
-				-ms-flex-align: center;
-				align-items: center;
-				gap: 10px;
-			}
-
-			.form input {
-				width: 600px;
-				height: 40px;
-				border-radius: 20px;
-				padding-left: 2rem;
-			}
-
-			.form button {
-				height: 40px;
-				border-radius: 20px;
-				padding: 0.5rem 3rem;
-				stroke: none;
-				stroke-opacity: 0;
-				background-color: var(--primary-color);
-				color: var(--mainWhite-color);
-			}
-
-			.form button:hover {
-				-webkit-transition: all 0.4s ease-in-out;
-				transition: all 0.4s ease-in-out;
-				cursor: pointer;
-				background-color: var(--secondary-color);
-			}
-
-			.display-box {
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				margin: 2rem 18rem;
-				border-radius:20px;
-				-ms-flex-item-align: center;
-				align-self: center;
-				background-color: var(--mainWhite-color);
-				overflow-y: auto;
-				height: 30vh;
-				padding: 20px;
-			}
-
-			.tag-container {
-				display: -webkit-box;
-				display: -ms-flexbox;
-				display: flex;
-				-webkit-box-orient: horizontal;
-				-webkit-box-direction: normal;
-				-ms-flex-direction: column;
-				flex-direction: column;
-				-ms-flex-item-align: start;
-				align-self: flex-start;
-				gap: 15px;
-				-ms-flex-pack: distribute;
-				justify-content: space-around;
-				-webkit-box-align: center;
-				-ms-flex-align: center;
-				align-items: center;
-			}
-
-			.tag-name {
-				font-size: 1.5rem;
-				font-weight: 500;
-				font-variant: small-caps;
-				color: var(--primary-color);
-			}
-
-			.tag-value {
-				font-size: 1.5rem;
-			}
-
-			.footer-area {
-				bottom: 0;
-				position: relative;
-			}
-
-			.footer-area .copyright {
-				font-size: 0.8rem;
-				position: absolute;
-			}
-			/*# sourceMappingURL=styles.css.map */
-		</style>
+		 {% load static %}
+		<link rel="stylesheet" href="{% static 'sass/styles.css' %}" />
+		
 	</head>
 	<body>
 		<header>
 			<div class="header-area">
-				<h4>Imprint - Generator</h4>
+				<p>Imprint - Generator</p>
 			</div>
 		</header>
 		<div>
+			{% if error%}
+			<div class="error">
+				<h3>
+					{{error}}
+				</h3>
+			</div>
+			{% endif %}
 			<form method="POST" action="">
 				{% csrf_token %}
 				<div class="form">
@@ -173,13 +56,24 @@
 					<div>
 						<p class="tag">{{exec}}</p>
 					</div>
+					<div>
+						<p class="tag">{{vat}}</p>
+					</div>
 				</div>
+			</div>
+			<div class="download-area">
+				<div>
+					<img src="{% static 'excel.svg'%}" alt="excel"/>
+				</div>
+				<div>
+					<button class="d-btn">Downlooad</button>
+				</div>
+
 			</div>
 		</div>
 		<footer>
 			<div class="footer-area">
 				<p class="copyright">
-					&copy; <p class="date"></p> SuperLax Technologies
 					&copy; <p class="date"></p> SuperLax Technologies
 				</p>
 			</div>

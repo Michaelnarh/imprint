@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from myapp.views import index
+from myapp.views import getFile
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('home/', admin.site.urls),
     path('', index),
+    path('download/', getFile),
     # url(r'home/', index, namehome'),
 ]
