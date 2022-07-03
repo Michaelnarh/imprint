@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.template import loader
 import re
 import os
+import urllib.request
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -43,8 +44,8 @@ def getFile(request):
 
 def index(request):
     if request.POST:
-        global p, m, ph, ex, c, ch, va
-        p, m, ph, ex, c, ch, va, text = "", "", "", "", "", "", "", ""
+        global p, m, ph, ex, c, ch, va, f, n, w, text
+        p, m, ph,  ex, c, ch, va, f, n, w, text = "", "", "", "", "", "", "", "", "", "", ""
         url = request.POST.get("url")
         type = is_valid_url(url)
         if type == None:
@@ -58,7 +59,13 @@ def index(request):
         # print(url)
         try:
 
-            html = urlopen(url).read()
+            # html = urlopen(url).read()
+            # url = "https://docs.python.org/3.4/howto/urllib2.html"
+            hdr = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64)'}
+            req = urllib.request.Request(url, headers=hdr)
+            response = urllib.request.urlopen(req)
+            html = response.read()
+
             soup = BeautifulSoup(html, features="html.parser")
 
             # kill all script and style elements
@@ -86,14 +93,20 @@ def index(request):
         # print('...........................................')
 
         # mo1 = heroRegex.search(text)
-        pro = re.search(r'(Provider.*:|Anbieter.*:).*\n.*', text)
-        mail = re.search(r'(E-mail.*:|E-Mail.*:).*\n.*', text)
-        phone = re.search(r'(Phone:|Telefon:).*\n.*', text)
-        exec = re.search(r'(Execu.*:|Vorstand.*:).*\n.*', text)
+        pro = re.search(
+            r'(Provider.*:|Anbieter.*:|Published by:|Editor-in-chief:).*\n.*', text)
+        mail = re.search(r'(E-mail.*:|E-Mail.*:|Mail.*:).*\n.*', text)
+        fax = re.search(r'(Fax:|fax.*:).*\n', text)
+        web = re.search(r'(Web site.*:|website.*:).*\n', text)
+        phone = re.search(r'(Phone:|Telefon:|Telephone.*:).*\n.*', text)
+        exec = re.search(
+            r'(Execu.*:|Managing Directors.*:|Vorstand.*:|Aufsichtsrat.*:|Mediatoren.*:|Editorial staff and news desk:).*\n.*', text)
         chairman = re.search(
             r'(Chairman of.*:|Vorsitzender des.*:).*\n.*', text)
-        com = re.search(r'(Commercial.*:|HRB-Nr.*:).*\n.*', text)
-        vat = re.search(r'(VAT.*:|USt.*:).*\n.*', text)
+        com = re.search(r'(Commercial.*:|HRB-Nr.*:|HRB Nr.*:).*\n.*', text)
+        vat = re.search(
+            r'(VAT.*:|USt.*:|WEEE Reg.*:|Umsatzsteuer-Id.*:).*\n.*', text)
+        note = re.search(r'(Hinweis.*:|UID Number.*:).*\n.*', text)
         try:
             p = pro.group()
         except:
@@ -122,14 +135,29 @@ def index(request):
             va = vat.group
         except:
             print("cannot group")
+        try:
+            f = fax.group
+        except:
+            print("cannot group")
+        try:
+            n = note.group
+        except:
+            print("cannot group")
+        try:
+            w = web.group
+        except:
+            print("cannot group")
         context = {
             "pro": p,
             "email": m,
+            "website": w,
+            "fax": f,
             "phone": ph,
             "exec": ex,
             "com": c,
             "chairman": ch,
             "vat": va,
+            "vat": n,
         }
         return render(request, "imprint.html", context)
     return render(request, "imprint.html", {})
